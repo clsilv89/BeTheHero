@@ -7,8 +7,68 @@
     tools:context=".CreateAccountActivity"
     android:background="@color/colorPrimary">
 
-    <ImageView
+    <androidx.constraintlayout.widget.ConstraintLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/usuario"/>
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/create_account_icon_iv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/usuario"/>
+
+        <EditText
+            android:id="@+id/create_account_email_et"
+            app:layout_constraintLeft_toLeftOf="@id/create_account_icon_iv"
+            app:layout_constraintRight_toRightOf="@id/create_account_icon_iv"
+            app:layout_constraintTop_toBottomOf="@id/create_account_icon_iv"
+            android:layout_marginTop="25dp"
+            android:inputType="textEmailAddress"
+            android:hint="@string/type_user"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/create_account_password_et"
+            app:layout_constraintLeft_toLeftOf="@id/create_account_icon_iv"
+            app:layout_constraintRight_toRightOf="@id/create_account_icon_iv"
+            app:layout_constraintTop_toBottomOf="@id/create_account_email_et"
+            android:layout_marginTop="5dp"
+            android:inputType="textPassword"
+            android:hint="@string/type_password"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"/>
+
+        <EditText
+            android:id="@+id/create_account_username_et"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:hint="@string/type_username"
+            app:layout_constraintLeft_toLeftOf="@id/create_account_icon_iv"
+            app:layout_constraintRight_toRightOf="@id/create_account_icon_iv"
+            app:layout_constraintTop_toBottomOf="@id/create_account_password_et"/>
+
+        <Button
+            android:id="@+id/create_account_send_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="@id/create_account_email_et"
+            app:layout_constraintRight_toRightOf="@id/create_account_email_et"
+            app:layout_constraintTop_toBottomOf="@id/create_account_username_et"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginTop="5dp"
+            android:text="@string/send_btn_text"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimaryDark"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
