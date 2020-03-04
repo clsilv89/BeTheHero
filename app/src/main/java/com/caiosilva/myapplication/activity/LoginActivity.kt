@@ -1,9 +1,11 @@
-package com.caiosilva.myapplication
+package com.caiosilva.myapplication.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.TextView
+import com.caiosilva.myapplication.R
+import com.google.firebase.auth.FirebaseAuth
 
 class LoginActivity : AppCompatActivity() {
 
@@ -16,5 +18,10 @@ class LoginActivity : AppCompatActivity() {
         createAccount.setOnClickListener {
             startActivity(Intent(this, CreateAccountActivity::class.java))
         }
+    }
+
+    fun logUser(email: String, password: String) {
+        val mAuth = FirebaseAuth.getInstance()
+        mAuth.signInWithEmailAndPassword(email, password)
     }
 }
