@@ -8,9 +8,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
-import com.google.android.gms.tasks.OnCompleteListener
-import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.AuthResult
+import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
 
 class CreateAccountActivity : AppCompatActivity() {
@@ -29,44 +27,52 @@ class CreateAccountActivity : AppCompatActivity() {
         val name = userNameEditText.text.toString()
         val password = passwordEditText.text.toString()
         val email = emailEditText.text.toString()
+//
+//        val user = User()
+//        user.name = name
+//        user.email = email
+//        user.password = password
 
         createAccountButton.setOnClickListener {
-            validateFields(name, password, email)
+            Log.d("Caio", "$name $email $password")
+//            validateFields(user)
         }
     }
 
-    fun validateFields(name: String, password: String, email: String) {
-        if (!name.isEmpty()) {
-            return
-        } else {
-            Toast.makeText(this, "Campo NOME obrigatório!", Toast.LENGTH_SHORT).show()
-        }
-        if (!password.isEmpty()) {
-            return
-        } else {
-            Toast.makeText(this, "Campo SENHA obrigatório!", Toast.LENGTH_SHORT).show()
-        }
-        if (!email.isEmpty()) {
-            return
+    private fun validateFields(user: User) {
+        if (!user.email?.isEmpty()!!) {
+            if (!user.password?.isEmpty()!!) {
+                if (!user.name?.isEmpty()!!) {
+
+                    createUser(user)
+
+                } else {
+                    Toast.makeText(this, "Campo NOME obrigatório!", Toast.LENGTH_SHORT).show()
+                }
+            } else {
+                Toast.makeText(this, "Campo SENHA obrigatório!", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Toast.makeText(this, "Campo EMAIL obrigatório!", Toast.LENGTH_SHORT).show()
         }
 
     }
 
-    fun createUser(name: String, password: String, email: String) {
+    private fun createUser(user: User) {
         authentication = FirebaseConfig().getFirebaseAuth()
-        authentication.createUserWithEmailAndPassword(email, password)
+        authentication.createUserWithEmailAndPassword(
+            user.email.toString(),
+            user.password.toString()
+        )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                } else {
-
+                    saveUSer(user)
                 }
             }
     }
 
-    fun saveUSer(name: String, password: String, email: String) {
-
+    private fun saveUSer(user: User) {
+        Log.d("Caio", user.name.toString())
     }
 
 }
