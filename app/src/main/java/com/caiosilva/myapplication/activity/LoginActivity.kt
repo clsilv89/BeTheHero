@@ -36,7 +36,21 @@ class LoginActivity : AppCompatActivity() {
             user.email = userEmail.text.toString()
             user.password = password.text.toString()
 
-            logUser(user)
+            validateFields(user)
+        }
+    }
+
+    private fun validateFields(user: User) {
+        if (user.email?.isNotEmpty()!!) {
+            if (user.password?.isNotEmpty()!!) {
+
+                logUser(user)
+
+            } else {
+                Toast.makeText(this, "Campo SENHA obrigatório!", Toast.LENGTH_SHORT).show()
+            }
+        } else {
+            Toast.makeText(this, "Campo EMAIL obrigatório!", Toast.LENGTH_SHORT).show()
         }
     }
 
