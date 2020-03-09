@@ -5,4 +5,11 @@
     <string name="type_username">Digite seu nome</string>
     <string name="send_btn_text">Enviar</string>
     <string name="no_account">Não tem uma conta? Cadastre-se!</string>
+    <string name="search_menu">Pesquisar</string>
+    <string name="logout_menu">Sair</string>
+    <string name="settings_menu">Configurações</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>

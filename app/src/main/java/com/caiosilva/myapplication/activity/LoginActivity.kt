@@ -14,7 +14,6 @@ import com.google.firebase.auth.FirebaseUser
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var authentication: FirebaseAuth
-    private lateinit var currentUser : FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +61,9 @@ class LoginActivity : AppCompatActivity() {
             )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    currentUser = authentication.currentUser!!
+                    val currentUser = authentication.currentUser
+                    currentUser?.let { callLoggedScreen(it) }
 
-                    callLoggedScreen(currentUser)
                 } else {
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
                 }
@@ -72,7 +71,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun callLoggedScreen(currentUser: FirebaseUser) {
-        Log.d("Caio", currentUser.uid)
         startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    override fun onStart() {
+        super.onStart()
+        authentication = FirebaseConfig().getFirebaseAuth()
+
+        val currentUser = authentication.currentUser
+        if(currentUser != null) {
+            callLoggedScreen(currentUser)
+        }
     }
 }
