@@ -5,20 +5,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 
 class FirebaseConfig {
-    private lateinit var database: DatabaseReference
+    private lateinit var mDatabase: DatabaseReference
     private lateinit var mAuth: FirebaseAuth
 
-    fun getFirebaseDatabase() : DatabaseReference {
-        if(database == null) {
-            database = FirebaseDatabase.getInstance().reference
-        }
-        return database
+    fun getFirebaseDatabase(): DatabaseReference {
+        mDatabase = FirebaseDatabase.getInstance().reference
+        return mDatabase
     }
 
-    fun getFirebaseAuth() : FirebaseAuth {
-        if (mAuth == null) {
-            mAuth = FirebaseAuth.getInstance()
-        }
+    fun getFirebaseAuth(): FirebaseAuth {
+        mAuth = FirebaseAuth.getInstance()
         return mAuth
     }
 }

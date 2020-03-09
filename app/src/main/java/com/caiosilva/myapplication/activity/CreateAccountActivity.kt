@@ -2,6 +2,8 @@ package com.caiosilva.myapplication.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
@@ -20,29 +22,25 @@ class CreateAccountActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_account)
 
-        val createAccountButton: Button = findViewById(R.id.create_account_send_btn)
-        val userNameEditText: EditText = findViewById(R.id.create_account_username_et)
-        val emailEditText: EditText = findViewById(R.id.create_account_email_et)
-        val passwordEditText: EditText = findViewById(R.id.create_account_password_et)
-        val name = userNameEditText.text.toString()
-        val password = passwordEditText.text.toString()
-        val email = emailEditText.text.toString()
-//
-//        val user = User()
-//        user.name = name
-//        user.email = email
-//        user.password = password
+        val createAccountButton = findViewById<Button>(R.id.create_account_send_btn)
+        val userNameEditText = findViewById<EditText>(R.id.create_account_username_et)
+        val emailEditText = findViewById<EditText>(R.id.create_account_email_et)
+        val passwordEditText = findViewById<EditText>(R.id.create_account_password_et)
 
         createAccountButton.setOnClickListener {
-            Log.d("Caio", "$name $email $password")
-//            validateFields(user)
+            val user = User()
+            user.name = userNameEditText.text.toString()
+            user.email = emailEditText.text.toString()
+            user.password = passwordEditText.text.toString()
+
+            validateFields(user)
         }
     }
 
     private fun validateFields(user: User) {
-        if (!user.email?.isEmpty()!!) {
-            if (!user.password?.isEmpty()!!) {
-                if (!user.name?.isEmpty()!!) {
+        if (user.email?.isNotEmpty()!!) {
+            if (user.password?.isNotEmpty()!!) {
+                if (user.name?.isNotEmpty()!!) {
 
                     createUser(user)
 
@@ -55,18 +53,21 @@ class CreateAccountActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Campo EMAIL obrigatório!", Toast.LENGTH_SHORT).show()
         }
-
     }
 
     private fun createUser(user: User) {
         authentication = FirebaseConfig().getFirebaseAuth()
+
         authentication.createUserWithEmailAndPassword(
-            user.email.toString(),
-            user.password.toString()
-        )
+                user.email.toString(),
+                user.password.toString()
+            )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     saveUSer(user)
+                } else {
+                    Log.d("Authentication", task.exception.toString())
+                    Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
                 }
             }
     }
@@ -74,5 +75,4 @@ class CreateAccountActivity : AppCompatActivity() {
     private fun saveUSer(user: User) {
         Log.d("Caio", user.name.toString())
     }
-
 }
