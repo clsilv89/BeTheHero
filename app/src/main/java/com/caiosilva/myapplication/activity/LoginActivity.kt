@@ -4,18 +4,17 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
 import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var authentication: FirebaseAuth
+    private lateinit var currentUser : FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,11 +62,17 @@ class LoginActivity : AppCompatActivity() {
             )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    val currentUser = authentication.currentUser
-                    Log.d("Caio", currentUser?.uid!!)
+                    currentUser = authentication.currentUser!!
+
+                    callLoggedScreen(currentUser)
                 } else {
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
                 }
             }
+    }
+
+    private fun callLoggedScreen(currentUser: FirebaseUser) {
+        Log.d("Caio", currentUser.uid)
+        startActivity(Intent(this, MainActivity::class.java))
     }
 }
