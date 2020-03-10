@@ -4,18 +4,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Base64OutputStream
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
+import com.caiosilva.myapplication.helper.Base64converter
 import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
 
 class CreateAccountActivity : AppCompatActivity() {
 
     private lateinit var authentication: FirebaseAuth
+    private lateinit var converter: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -42,6 +45,7 @@ class CreateAccountActivity : AppCompatActivity() {
             if (user.password?.isNotEmpty()!!) {
                 if (user.name?.isNotEmpty()!!) {
 
+                    converter = Base64converter().code(user.email!!)
                     createUser(user)
 
                 } else {
@@ -64,7 +68,11 @@ class CreateAccountActivity : AppCompatActivity() {
             )
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-                    saveUSer(user)
+                    try {
+                        saveUSer(user)
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                    }
                 } else {
                     Log.d("Authentication", task.exception.toString())
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
@@ -73,6 +81,6 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun saveUSer(user: User) {
-        Log.d("Caio", user.name.toString())
+
     }
 }
