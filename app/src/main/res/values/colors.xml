@@ -6,4 +6,5 @@
     <color name="white">#fff</color>
     <color name="whatsAppColor">#075E54</color>
     <color name="whatsAppColorLight">#128c7E</color>
+    <color name="black">#000</color>
 </resources>
