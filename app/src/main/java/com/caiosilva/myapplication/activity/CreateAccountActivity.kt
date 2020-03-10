@@ -2,16 +2,12 @@ package com.caiosilva.myapplication.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Base64OutputStream
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
-import com.caiosilva.myapplication.helper.Base64converter
 import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
 
@@ -20,6 +16,7 @@ class CreateAccountActivity : AppCompatActivity() {
     private lateinit var authentication: FirebaseAuth
     private lateinit var converter: String
 
+    @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -32,6 +29,7 @@ class CreateAccountActivity : AppCompatActivity() {
 
         createAccountButton.setOnClickListener {
             val user = User()
+
             user.name = userNameEditText.text.toString()
             user.email = emailEditText.text.toString()
             user.password = passwordEditText.text.toString()
@@ -45,7 +43,6 @@ class CreateAccountActivity : AppCompatActivity() {
             if (user.password?.isNotEmpty()!!) {
                 if (user.name?.isNotEmpty()!!) {
 
-                    converter = Base64converter().code(user.email!!)
                     createUser(user)
 
                 } else {
@@ -69,7 +66,10 @@ class CreateAccountActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
                     try {
-                        saveUSer(user)
+                        user.id = authentication.currentUser?.uid
+
+                        user.saveUser()
+                        finish()
                     } catch (e: Exception) {
                         e.printStackTrace()
                     }
@@ -78,9 +78,5 @@ class CreateAccountActivity : AppCompatActivity() {
                     Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
                 }
             }
-    }
-
-    private fun saveUSer(user: User) {
-
     }
 }
