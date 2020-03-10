@@ -6,4 +6,53 @@
     android:layout_height="match_parent"
     tools:context=".activity.SettingsActivity">
 
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/toolbar_include"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_image_iv"
+        app:civ_border_color="@color/colorPrimary"
+        app:civ_border_width="2dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_include"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/default_avatar"
+        android:layout_width="150dp"
+        android:layout_height="150dp"/>
+    
+    <LinearLayout
+        app:layout_constraintTop_toBottomOf="@id/profile_image_iv"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="40dp"
+        android:padding="25dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/settings_username"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="@string/type_username"
+            android:layout_weight="1"/>
+
+        <ImageView
+            android:id="@+id/edit_icon_iv"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10sp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_edit_black_24dp"/>
+
+    </LinearLayout>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

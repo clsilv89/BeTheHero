@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CloneWhatsApp</string>
+    <string name="app_name">WhatsApp</string>
     <string name="type_user">Digite seu e-mail</string>
     <string name="type_password">Digite sua senha</string>
     <string name="type_username">Digite seu nome</string>
@@ -8,6 +8,8 @@
     <string name="search_menu">Pesquisar</string>
     <string name="logout_menu">Sair</string>
     <string name="settings_menu">Configurações</string>
+    <string name="message_tab">Mensagens</string>
+    <string name="contacts_tab">Contatos</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

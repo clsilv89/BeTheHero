@@ -1,8 +1,8 @@
 package com.caiosilva.myapplication.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -26,13 +26,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val toolbar = findViewById<Toolbar>(R.id.main_toolbar)
-        toolbar.title = "WhatsApp"
+        toolbar.title = resources.getString(R.string.app_name)
         setSupportActionBar(toolbar)
 
         val fragmentPagerItemAdapter = FragmentPagerItemAdapter(
             supportFragmentManager, FragmentPagerItems.with(this)
-                .add("Mensagens", MessagesFragment::class.java)
-                .add("Contatos", ContactsFragment::class.java)
+                .add(R.string.message_tab, MessagesFragment::class.java)
+                .add(R.string.contacts_tab, ContactsFragment::class.java)
                 .create()
         )
 
@@ -54,7 +54,7 @@ class MainActivity : AppCompatActivity() {
 
         when(item.itemId) {
             R.id.menu_logout -> logOut()
-            R.id.menu_settings -> Log.d("Caio", "Configs")
+            R.id.menu_settings -> openSettings()
         }
 
         return super.onOptionsItemSelected(item)
@@ -69,5 +69,9 @@ class MainActivity : AppCompatActivity() {
         } catch (e: Exception) {
             e.stackTrace
         }
+    }
+
+    private fun openSettings() {
+        startActivity(Intent(this, SettingsActivity::class.java))
     }
 }
