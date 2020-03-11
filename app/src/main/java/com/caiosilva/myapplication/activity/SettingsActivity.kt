@@ -79,12 +79,21 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            REQUEST_CAMERA -> {
-                if (resultCode == Activity.RESULT_OK && data != null) {
-                    val profileImage = data.extras?.get("data") as Bitmap
-                    profileImageView.setImageBitmap(data.extras?.get("data") as Bitmap)
+
+        var profileImage: Bitmap? = null
+        if (resultCode == Activity.RESULT_OK && data != null) {
+
+            when (requestCode) {
+                REQUEST_GALLERY -> {
+                    val selectedImageUri = data.data
+                    profileImage = MediaStore.Images.Media.getBitmap(contentResolver, selectedImageUri)
                 }
+                REQUEST_CAMERA -> {
+                    profileImage = data.extras?.get("data") as Bitmap
+                }
+            }
+            if(profileImage != null) {
+                profileImageView.setImageBitmap(profileImage)
             }
         }
     }
@@ -94,10 +103,10 @@ class SettingsActivity : AppCompatActivity() {
         alertDialog.setTitle(R.string.alert_title)
         alertDialog.setMessage(R.string.alert_permission_text)
         alertDialog.setPositiveButton(
-            R.string.alert_ok_bt,
-            DialogInterface.OnClickListener { dialog, which ->
-                finish()
-            })
+            R.string.alert_ok_bt
+        ) { _, _ ->
+            finish()
+        }
 
         alertDialog.create().setCancelable(false)
         alertDialog.show()
