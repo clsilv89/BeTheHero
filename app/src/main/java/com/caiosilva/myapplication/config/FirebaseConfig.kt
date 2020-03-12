@@ -22,7 +22,7 @@ class FirebaseConfig {
         return mAuth
     }
 
-    fun getFirestore(): StorageReference {
+    fun getStorage(): StorageReference {
         mFirestore = FirebaseStorage.getInstance().reference
         return mFirestore
     }
