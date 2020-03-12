@@ -9,7 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
@@ -28,7 +30,9 @@ class SettingsActivity : AppCompatActivity() {
         android.Manifest.permission.CAMERA
     )
     private lateinit var profileImageView: CircleImageView
+    private lateinit var editNameIcon: ImageView
     private lateinit var storage: StorageReference
+    private lateinit var editNameEdit: EditText
     private lateinit var currentUser: com.caiosilva.myapplication.helper.FirebaseUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +40,8 @@ class SettingsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_settings)
 
         profileImageView = findViewById(R.id.profile_image_iv)
+        editNameIcon = findViewById(R.id.edit_icon_iv)
+        editNameEdit = findViewById(R.id.settings_username)
 
         val openGallery = findViewById<ImageButton>(R.id.open_gallery_setting_iv)
         val openCameraBtn = findViewById<ImageButton>(R.id.open_camera_setting_iv)
@@ -52,10 +58,25 @@ class SettingsActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         currentUser.getCurrentUser()
+
+        val displayName = currentUser.getUserName()
+
+        editNameIcon.setOnClickListener {
+            if(displayName != null) {
+                updateUserName(editNameEdit.text.toString())
+            }
+        }
+
+        if(displayName != null) {
+            Log.d("Caio", "$displayName caio")
+            editNameEdit.setText(displayName)
+        } else {
+            editNameEdit.setText("     ")
+        }
+
         val photoUrl = currentUser.getPhotoUrl()
         if (photoUrl != null) {
             Glide.with(this).load(photoUrl).into(profileImageView)
-            Log.d("Caio", photoUrl.toString())
         } else {
             profileImageView.setImageResource(R.drawable.default_avatar_png)
         }
@@ -111,7 +132,9 @@ class SettingsActivity : AppCompatActivity() {
             }
             if (profileImage != null) {
                 profileImageView.setImageBitmap(profileImage)
+
                 val baos = ByteArrayOutputStream()
+
                 profileImage.compress(Bitmap.CompressFormat.JPEG, 70, baos)
                 val imageData = baos.toByteArray()
                 val storeImage = storage.child("images")
@@ -119,21 +142,37 @@ class SettingsActivity : AppCompatActivity() {
                     .child(currentUser.getUserId()!!)
                     .child("profile.jpg")
                 val uploadTask = storeImage.putBytes(imageData)
+                val urlTask = uploadTask.continueWithTask { task ->
+                    if (!task.isSuccessful) {
+                        task.exception?.let {
+                            throw  it
+                        }
+                    }
+                    storeImage.downloadUrl
+                }.addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        val imgUrl = task.result
+                        if (imgUrl != null) updateUserPhoto(imgUrl)
+                    }
+                }
+
                 uploadTask.addOnFailureListener {
-                    Toast.makeText(this, "Falha ao carregar imagem", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Falha ao carregar imagem", Toast.LENGTH_LONG)
+                        .show()
                 }.addOnSuccessListener {
                     Toast.makeText(this, "Sucesso ao carregar imagem", Toast.LENGTH_LONG).show()
-                    val imgUrl = it.storage.downloadUrl.result
-                    if(imgUrl != null) {
-                        updateUserPhoto(imgUrl)
-                    }
                 }
             }
         }
     }
-     private fun updateUserPhoto(url: Uri) {
-         currentUser.updateUserPhoto(url)
-     }
+
+    private fun updateUserPhoto(url: Uri) {
+        currentUser.updateUserPhoto(url)
+    }
+
+    private fun updateUserName(name: String) {
+        currentUser.updateUserName(name, applicationContext)
+    }
 
     private fun permitAlert() {
         val alertDialog = AlertDialog.Builder(this)
@@ -144,7 +183,6 @@ class SettingsActivity : AppCompatActivity() {
         ) { _, _ ->
             finish()
         }
-
         alertDialog.create().setCancelable(false)
         alertDialog.show()
     }
