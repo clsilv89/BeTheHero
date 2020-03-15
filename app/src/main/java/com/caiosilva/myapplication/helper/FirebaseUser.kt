@@ -5,6 +5,7 @@ import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import com.caiosilva.myapplication.config.FirebaseConfig
+import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 
@@ -50,13 +51,12 @@ class FirebaseUser {
         }
     }
 
-    fun updateUserName(name: String, context: Context): Boolean {
+    fun updateUserName(name: String): Boolean {
         try{
             val user = getCurrentUser()
             val userProfile = UserProfileChangeRequest.Builder().setDisplayName(name).build()
             user?.updateProfile(userProfile)?.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    Toast.makeText(context, "Nome atualizado com sucesso!", Toast.LENGTH_LONG).show()
                     return@addOnCompleteListener
                 } else {
                     Log.d("Perfil", "Erro ao atualizar perfil")
@@ -67,5 +67,35 @@ class FirebaseUser {
             e.printStackTrace()
             return false
         }
+    }
+
+    fun updateUserName(name: String, context: Context): Boolean {
+        try{
+            val user = getCurrentUser()
+            val userProfile = UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            user?.updateProfile(userProfile)?.addOnCompleteListener { task ->
+                if(task.isSuccessful) {
+                    Toast.makeText(context, "Nome atualizado com sucesso!", Toast.LENGTH_LONG).show()
+
+                    return@addOnCompleteListener
+                } else {
+                    Log.d("Perfil", "Erro ao atualizar perfil")
+                }
+            }
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        }
+    }
+
+    fun getLoggedUser() : User  {
+        val user = getCurrentUser()
+        val userData = User()
+        userData.email = user?.email
+        userData.name = user?.displayName
+        userData.photo = user?.photoUrl.toString()
+
+        return userData
     }
 }

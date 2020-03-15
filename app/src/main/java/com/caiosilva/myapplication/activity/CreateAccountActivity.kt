@@ -10,6 +10,7 @@ import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
 import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class CreateAccountActivity : AppCompatActivity() {
 
@@ -57,6 +58,8 @@ class CreateAccountActivity : AppCompatActivity() {
     }
 
     private fun createUser(user: User) {
+        val firebaseUser = com.caiosilva.myapplication.helper.FirebaseUser()
+
         authentication = FirebaseConfig().getFirebaseAuth()
 
         authentication.createUserWithEmailAndPassword(
@@ -67,6 +70,8 @@ class CreateAccountActivity : AppCompatActivity() {
                 if (task.isSuccessful) {
                     try {
                         user.id = authentication.currentUser?.uid
+
+                        firebaseUser.updateUserName(user.name!!)
 
                         user.saveUser()
                         finish()

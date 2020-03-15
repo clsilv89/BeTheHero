@@ -19,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
 import com.caiosilva.myapplication.helper.Permissions
+import com.caiosilva.myapplication.model.User
 import com.google.firebase.storage.StorageReference
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
@@ -35,6 +36,8 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var editNameEdit: EditText
     private lateinit var currentUser: com.caiosilva.myapplication.helper.FirebaseUser
 
+    private var userModel = User()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
@@ -48,6 +51,7 @@ class SettingsActivity : AppCompatActivity() {
 
         storage = FirebaseConfig().getStorage()
         currentUser = com.caiosilva.myapplication.helper.FirebaseUser()
+        userModel = currentUser.getLoggedUser()
 
         Permissions().validatePermission(permissions, this, 1)
 
@@ -62,16 +66,13 @@ class SettingsActivity : AppCompatActivity() {
         val displayName = currentUser.getUserName()
 
         editNameIcon.setOnClickListener {
-            if(displayName != null) {
-                updateUserName(editNameEdit.text.toString())
-            }
+            val nameEditText = editNameEdit.text.toString()
+            updateUser(nameEditText)
         }
 
-        if(displayName != null) {
+        if (displayName != null) {
             Log.d("Caio", "$displayName caio")
             editNameEdit.setText(displayName)
-        } else {
-            editNameEdit.setText("     ")
         }
 
         val photoUrl = currentUser.getPhotoUrl()
@@ -153,6 +154,7 @@ class SettingsActivity : AppCompatActivity() {
                     if (task.isSuccessful) {
                         val imgUrl = task.result
                         if (imgUrl != null) updateUserPhoto(imgUrl)
+                        userModel.updateUser()
                     }
                 }
 
@@ -170,7 +172,11 @@ class SettingsActivity : AppCompatActivity() {
         currentUser.updateUserPhoto(url)
     }
 
-    private fun updateUserName(name: String) {
+    private fun updateUser(name: String) {
+
+        userModel.name = name
+        userModel.updateUser()
+
         currentUser.updateUserName(name, applicationContext)
     }
 
