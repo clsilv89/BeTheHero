@@ -5,10 +5,11 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ContactsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <view class="androidx.appcompat.app.AlertController$RecycleListView"
+        android:id="@+id/contact_list_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Contatos" />
+        android:layout_height="match_parent">
+
+    </view>
 
 </FrameLayout>
