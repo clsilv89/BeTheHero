@@ -5,11 +5,10 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ContactsFragment">
 
-    <view class="androidx.appcompat.app.AlertController$RecycleListView"
+    <androidx.recyclerview.widget.RecyclerView
+        android:scrollbars="vertical"
         android:id="@+id/contact_list_rv"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </view>
+        android:layout_height="match_parent"/>
 
 </FrameLayout>

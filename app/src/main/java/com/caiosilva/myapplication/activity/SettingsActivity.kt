@@ -71,7 +71,6 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         if (displayName != null) {
-            Log.d("Caio", "$displayName caio")
             editNameEdit.setText(displayName)
         }
 
@@ -153,8 +152,11 @@ class SettingsActivity : AppCompatActivity() {
                 }.addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val imgUrl = task.result
-                        if (imgUrl != null) updateUserPhoto(imgUrl)
-                        userModel.updateUser()
+                        if (imgUrl != null) {
+                            updateUserPhoto(imgUrl)
+                            userModel.updateUser()
+                        }
+
                     }
                 }
 

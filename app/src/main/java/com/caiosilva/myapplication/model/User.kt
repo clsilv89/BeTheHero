@@ -12,7 +12,6 @@ class User {
     var email: String? = null
     @get:Exclude
     var password: String? = null
-    @get:Exclude
     var id: String? = null
     var photo: String? = null
 
