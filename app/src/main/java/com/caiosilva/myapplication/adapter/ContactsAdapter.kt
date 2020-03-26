@@ -14,7 +14,8 @@ import com.caiosilva.myapplication.model.User
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.contact_item_rv.view.*
 
-class ContactsAdapter (private val contactsList: ArrayList<User>, private val applicationContext: Context)
+class ContactsAdapter (private val contactsList: ArrayList<User>,
+                       private val applicationContext: Context)
     : RecyclerView.Adapter<ContactsAdapter.ViewHolder>() {
 
     private val contacts = this.contactsList

@@ -36,7 +36,8 @@ class FirebaseUser {
     fun updateUserPhoto(url: Uri): Boolean {
         try {
             val user = getCurrentUser()
-            val userProfile = UserProfileChangeRequest.Builder().setPhotoUri(url).build()
+            val userProfile = UserProfileChangeRequest.Builder()
+                .setPhotoUri(url).build()
             user?.updateProfile(userProfile)?.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     return@addOnCompleteListener
@@ -54,7 +55,8 @@ class FirebaseUser {
     fun updateUserName(name: String): Boolean {
         try{
             val user = getCurrentUser()
-            val userProfile = UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            val userProfile = UserProfileChangeRequest.Builder()
+                .setDisplayName(name).build()
             user?.updateProfile(userProfile)?.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
                     return@addOnCompleteListener
@@ -72,10 +74,12 @@ class FirebaseUser {
     fun updateUserName(name: String, context: Context): Boolean {
         try{
             val user = getCurrentUser()
-            val userProfile = UserProfileChangeRequest.Builder().setDisplayName(name).build()
+            val userProfile = UserProfileChangeRequest.Builder()
+                .setDisplayName(name).build()
             user?.updateProfile(userProfile)?.addOnCompleteListener { task ->
                 if(task.isSuccessful) {
-                    Toast.makeText(context, "Nome atualizado com sucesso!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Nome atualizado com sucesso!",
+                        Toast.LENGTH_LONG).show()
 
                     return@addOnCompleteListener
                 } else {

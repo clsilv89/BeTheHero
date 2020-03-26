@@ -3,6 +3,8 @@ package com.caiosilva.myapplication.activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -10,12 +12,10 @@ import com.caiosilva.myapplication.R
 import com.caiosilva.myapplication.config.FirebaseConfig
 import com.caiosilva.myapplication.model.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 
 class CreateAccountActivity : AppCompatActivity() {
 
     private lateinit var authentication: FirebaseAuth
-    private lateinit var converter: String
 
     @ExperimentalStdlibApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,6 +28,9 @@ class CreateAccountActivity : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.create_account_email_et)
         val passwordEditText = findViewById<EditText>(R.id.create_account_password_et)
 
+        createAccountButton.setShadowLayer(15.0F, 0.0F, 0.0F,
+            resources.getColor(R.color.white))
+        
         createAccountButton.setOnClickListener {
             val user = User()
 
@@ -47,13 +50,16 @@ class CreateAccountActivity : AppCompatActivity() {
                     createUser(user)
 
                 } else {
-                    Toast.makeText(this, "Campo NOME obrigatório!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Campo NOME obrigatório!",
+                        Toast.LENGTH_SHORT).show()
                 }
             } else {
-                Toast.makeText(this, "Campo SENHA obrigatório!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Campo SENHA obrigatório!",
+                    Toast.LENGTH_SHORT).show()
             }
         } else {
-            Toast.makeText(this, "Campo EMAIL obrigatório!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Campo EMAIL obrigatório!",
+                Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -80,7 +86,8 @@ class CreateAccountActivity : AppCompatActivity() {
                     }
                 } else {
                     Log.d("Authentication", task.exception.toString())
-                    Toast.makeText(this, task.exception.toString(), Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, task.exception.toString(),
+                        Toast.LENGTH_LONG).show()
                 }
             }
     }
