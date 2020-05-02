@@ -42,4 +42,9 @@ class User {
 
         return usuarioMap
     }
+
+    fun teste() {
+        
+    }
+
 }
