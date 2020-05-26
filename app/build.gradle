@@ -16,6 +16,11 @@ android {
         multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        lintOptions {
+            abortOnError false
+        }
+
     }
 
     buildTypes {
